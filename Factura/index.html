@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura2</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            box-sizing: border-box;
+        }
+
+        .contenedor {
+            border: 1px solid black;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            margin: 20px 0;
+        }
+
+        .logo-container {
+            background-color: #1E1F26;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .text2 {
+            font-size: 50px;
+            color: #FF2E63;
+            font-weight: bold;
+            font-family: sans-serif;
+            padding-right: 45px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+            margin-left: 40px;
+        }
+
+        .linea-roja {
+            background-color: #FF2E63;
+            height: 15px;
+            width: 100%;
+        }
+
+        .contenedor2 {
+            background-color: #1E1F26;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .introduccion p {
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .introduccion p.a {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .introduccion strong {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .introduccion p.b {
+            font-size: 0.7em;
+        }
+
+        .introduccion2 {
+            text-align: right;
+            line-height: 1.6;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .introduccion2 p {
+            display: flex;
+            margin-bottom: 10px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .introduccion2 p:last-child {
+            margin-bottom: 0;
+        }
+
+        .introduccion2 span {
+            font-weight: bold;
+            white-space: nowrap;
+            min-width: 80px;
+            text-align: left;
+        }
+
+        .introduccion2 span.value {
+            white-space: nowrap;
+            flex-grow: 1;
+            text-align: right;
+        }
+
+        .table-scroll-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .invoice-table {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .table-header,
+        .table-row {
+            display: table-row;
+        }
+
+        .table-header {
+            background-color: #e6ecec;
+            font-weight: bold;
+            color: black;
+            font-size: 16px;
+        }
+
+        .table-cell {
+            display: table-cell;
+            padding: 20px 0;
+            vertical-align: middle;
+            border-bottom: 1px solid black;
+        }
+
+        .table-row:last-of-type .table-cell {
+            border-bottom: none;
+        }
+
+        .table-header .table-cell {
+            padding: 20px 40px;
+        }
+
+        .table-row .table-cell {
+            padding: 20px 40px;
+        }
+
+        .col-sl {
+            width: 5%;
+            text-align: left;
+        }
+
+        .col-item {
+            width: 50%;
+            text-align: left;
+        }
+
+        .col-price {
+            width: 15%;
+            text-align: right;
+        }
+
+        .col-qty {
+            width: 10%;
+            text-align: right;
+        }
+
+        .col-total {
+            width: 20%;
+            text-align: right;
+        }
+
+        .col-item div {
+            white-space: normal;
+        }
+
+        .espacio-con-lineas {
+            height: 80px;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            margin: 20px 40px;
+            box-sizing: border-box;
+        }
+
+        .seccion-final {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            flex-grow: 1;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+
+        .info-izquierda {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 50%;
+        }
+
+        .agradecimiento {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .payment-info p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .payment-info strong {
+            font-weight: bold;
+        }
+
+        .terms-conditions {
+            margin-top: 40px;
+            line-height: 1.5;
+            font-size: 0.9em;
+        }
+
+        .terms-conditions strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .info-derecha {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .totales-tabla {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .totales-fila {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .totales-fila span:first-child {
+            font-weight: bold;
+            min-width: 80px;
+            text-align: left;
+        }
+
+        .totales-fila span:last-child {
+            font-weight: normal;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .totales-fila.total {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding-top: 5px;
+            border-top: 1px solid black;
+        }
+
+        .firma {
+            text-align: center;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+            width: 150px;
+            font-weight: bold;
+        }
+
+        .linea-negra-inferior {
+            background-color: #1E1F26;
+            height: 30px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        @media (max-width: 1160px) {
+            .contenedor {
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 950px) {
+            .contenedor {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .contenedor {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .logo-container {
+                padding-right: none;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .logo-container img {
+                margin-left: 0;
+            }
+
+            .text2 {
+                padding-right: 0px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .text2 p {
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .contenedor2 {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .introduccion {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .introduccion2 {
+                text-align: center;
+                margin-top: 0;
+            }
+
+            .introduccion2 p {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .introduccion2 span {
+                display: inline-block;
+                min-width: auto;
+                text-align: center;
+                margin-right: 0;
+            }
+
+            .introduccion2 span.value {
+                text-align: center;
+            }
+
+            .seccion-final {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .info-izquierda {
+                width: 100%;
+                order: 2;
+            }
+
+            .info-derecha {
+                width: 100%;
+                order: 1;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .totales-tabla {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .firma {
+                width: auto;
+                border-top: none;
+            }
+
+            .terms-conditions {
+                margin-top: 20px;
+            }
+
+            .table-cell {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .table-header .table-cell {
+                padding: 15px;
+            }
+
+            .col-sl {
+                min-width: 30px;
+            }
+
+            .col-item {
+                min-width: 120px;
+            }
+
+            .col-price {
+                min-width: 60px;
+            }
+
+            .col-qty {
+                min-width: 40px;
+            }
+
+            .col-total {
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="logo-container">
+            <img src="logo.png" alt="logo">
+            <div class="text2">
+                <p>INVOICE</p>
+            </div>
+        </div>
+        <div class="linea-roja"></div>
+        <div class="contenedor2">
+            <div class="introduccion">
+                <p class="a">Invoice to:</p>
+                <p><strong>Dwyane Clark</strong></p>
+                <p class="b">24 Dummy Street Area,<br>Location, Lorem Ipsum,<br>970xxxxx</p>
+            </div>
+            <div class="introduccion2">
+                <p><span>Invoice#</span><span class="value">52148</span></p>
+                <p><span>Date:</span><span class="value">01 / 02 / 2020</span></p>
+            </div>
+        </div>
+
+        <div class="table-scroll-container">
+            <div class="invoice-table">
+                <div class="table-header">
+                    <div class="table-cell col-sl">SL.</div>
+                    <div class="table-cell col-item">Item Description</div>
+                    <div class="table-cell col-price">Price</div>
+                    <div class="table-cell col-qty">Qty</div>
+                    <div class="table-cell col-total">Total</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="table-cell col-sl">1</div>
+                    <div class="table-cell col-item">Lorem Ipsum Dolor</div>
+                    <div class="table-cell col-price">$50.00</div>
+                    <div class="table-cell col-qty">1</div>
+                    <div class="table-cell col-total">$50.00</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="table-cell col-sl">2</div>
+                    <div class="table-cell col-item">Pellentesque id neque liguia</div>
+                    <div class="table-cell col-price">$20.00</div>
+                    <div class="table-cell col-qty">3</div>
+                    <div class="table-cell col-total">$60.00</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="table-cell col-sl">3</div>
+                    <div class="table-cell col-item">Interdum et malesuada fames</div>
+                    <div class="table-cell col-price">$10.00</div>
+                    <div class="table-cell col-qty">2</div>
+                    <div class="table-cell col-total">$20.00</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="table-cell col-sl">4</div>
+                    <div class="table-cell col-item">Vivamus volutpat faucibus</div>
+                    <div class="table-cell col-price">$90.00</div>
+                    <div class="table-cell col-qty">1</div>
+                    <div class="table-cell col-total">$90.00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="espacio-con-lineas"></div>
+
+        <div class="seccion-final">
+            <div class="info-izquierda">
+                <p class="agradecimiento">Thank you for your business</p>
+                <div class="payment-info">
+                    <p><strong>Payment Info:</strong></p>
+                    <p>Account #: 1234 5678 9012</p>
+                    <p>A/C Name: Lorem Ipsum</p>
+                    <p>Bank Details: Add your details</p>
+                </div>
+                <div class="terms-conditions">
+                    <strong>Terms & Conditions</strong>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vulputate pretium consectetur.
+                        Curabitur tempor posuere massa in semper. Pellentesque viverra nibh eu vehicula mattis. Nullam
+                        porta.</p>
+                </div>
+            </div>
+
+            <div class="info-derecha">
+                <div class="totales-tabla">
+                    <div class="totales-fila">
+                        <span>Sub Total:</span><span>$220.00</span>
+                    </div>
+                    <div class="totales-fila">
+                        <span>Tax:</span><span>0.00%</span>
+                    </div>
+                    <div class="totales-fila total">
+                        <span>Total:</span><span>$220.00</span>
+                    </div>
+                </div>
+                <div class="firma">
+                    Authorised Sign
+                </div>
+            </div>
+        </div>
+        <div class="linea-negra-inferior"></div>
+    </div>
+</body>
+
+</html>
